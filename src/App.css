@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.main {
+  margin: 50px;
+}
+
+.form-group {
+  margin-top: 30px;
+}
+
+#form-submit {
+  margin-top: 30px;
+}
