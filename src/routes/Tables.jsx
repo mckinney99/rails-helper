@@ -29,9 +29,12 @@ export default function Tables() {
   }
 
   const handleAddColumnChange = (e) => {
-    const abc = {};
-    abc[e.target.className] = e.target.value;
-    setColumnValues({ ...columnValues, ...abc });
+    const newCol = {};
+    newCol[e.target.className] = e.target.value;
+    setColumnValues({ ...columnValues, ...newCol });
+
+    const oldCol = [];
+
   };
 
   const handleAddColumnClick = () => {
@@ -124,7 +127,7 @@ export default function Tables() {
               <Col>
                 <Form.Select aria-label="Default select example"
                   id="columnType" 
-                  value={columnType}
+                  value={formData.columnType}
                   onChange={handleChange}
                   name="columnType"
                 >
