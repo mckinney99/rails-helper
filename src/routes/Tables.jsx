@@ -11,9 +11,6 @@ export default function Tables() {
     )
 
   const [columnFields, setColumnFields] = React.useState([])
-  
-  const [columnCounter, setColumnCounter] = React.useState(0);
-  const [columnData, setColumnData] = React.useState([])
 
   function handleChange(event) {
     const {name, value, type, checked} = event.target
