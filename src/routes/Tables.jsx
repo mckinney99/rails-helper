@@ -7,16 +7,13 @@ export default function Tables() {
       {
         tableType: "",
         tableName: "",
-        columnName: "",
       }
     )
+
+  const [columnFields, setColumnFields] = React.useState([])
   
   const [columnCounter, setColumnCounter] = React.useState(0);
-  const [columnValues, setColumnValues] = React.useState({});
-  const [columnType, setColumnType] = React.useState({});
-
-
-    console.log(formData)
+  const [columnData, setColumnData] = React.useState([])
 
   function handleChange(event) {
     const {name, value, type, checked} = event.target
@@ -28,21 +25,24 @@ export default function Tables() {
     })
   }
 
-  const handleAddColumnChange = (e) => {
-    const newCol = {};
-    newCol[e.target.className] = e.target.value;
-    setColumnValues({ ...columnValues, ...newCol });
-
-    const oldCol = [];
-
-  };
+  const handleColumnChange = (index, event) => {
+    let data = [...columnFields];
+    data[index][event.target.name] = event.target.value;
+    setColumnFields(data);
+  }
 
   const handleAddColumnClick = () => {
-    setColumnCounter(columnCounter + 1);
-    console.log(columnCounter);
+    let newcolumn = { columnName: '', columnType: '' }
+    setColumnFields([...columnFields, newcolumn])
   };
 
-  function handleResult() {
+  const removeColumns = (index) => {
+    let data = [...columnFields];
+    data.splice(index, 1)
+    setColumnFields(data)
+  }
+
+  const handleResult = () => {
     if (formData.tableType === 'create') {
       let result = `rails generate migration ${formData.tableName}`
       return result
@@ -52,10 +52,27 @@ export default function Tables() {
     } else if (formData.tableType === 'create-join') {
       let result = `rails generate create-join ${formData.tableName}`
       return result
+    } else {
+      return ""
     }
   }
 
-  const result = handleResult();
+  const handleColumns = () => {
+    let fields = []
+    if (columnFields.length >= 1) {
+      for (var i=0; i<columnFields.length; i++) {
+        console.log(columnFields[i].columnName + ':' + columnFields[i].columnType)
+        fields.push(columnFields[i].columnName + ':' + columnFields[i].columnType)
+      }
+      console.log(fields)
+      return fields.toString().replace(',',' ')
+    } else {
+      return ""
+    }
+    
+  }
+
+  const result = handleResult() + " " + handleColumns()
 
   return (
     <div>
@@ -87,17 +104,7 @@ export default function Tables() {
         </div>
         }
 
-        {formData.tableType === 'add-column' && 
-        <div className="form-group">
-          <Form.Label>Column Name (In CamelCase)</Form.Label>
-          <Form.Control
-            onChange={handleChange}
-            value={formData.columnName}
-            name="columnName"
-            placeholder="Column Name"
-          />
-        </div>
-        }
+        {/* -------------------------------------- COLUMN FORM -------------------------------- */}
 
         <Button 
           id="form-submit" 
@@ -107,40 +114,47 @@ export default function Tables() {
         </Button>{' '}
         <br/>
 
-        {Array.from(Array(columnCounter)).map((c, index) => {
+        {columnFields.map((input, index) => {
           return (
-          <>
+          <div className="column" key={index}>
           <Form.Label>Column Name (In CamelCase)</Form.Label>
           <br/>
           <Form>
-            <Row>
-              <Col>
-                <Form.Control
-                  onChange={handleAddColumnChange}
-                  value={formData.addColumnName}
-                  name="columnName"
-                  placeholder="Column Name"
-                  className={index}
-                  key={c}
-                />
-              </Col>
-              <Col>
-                <Form.Select aria-label="Default select example"
-                  id="columnType" 
-                  value={formData.columnType}
-                  onChange={handleChange}
-                  name="columnType"
-                >
-                  <option value="">-- Select --</option>
-                  <option value="string">String</option>
-                  <option value="integer">Integer</option>
-                  <option value="index">Index</option>
-                </Form.Select>
-              </Col>
-            </Row>
+            <div>
+              <Row>
+                <Col>
+                  <Form.Control
+                    name='columnName'
+                    placeholder="Column Name"
+                    className={index}
+                    onChange={event => handleColumnChange(index, event)}
+                    value={input.columnName}
+                  />
+                </Col>
+                <Col>
+                  <Form.Select aria-label="Default select example"
+                    id="columnType" 
+                    name="columnType"
+                    value={input.columnType}
+                    onChange={event => handleColumnChange(index, event)}
+                  >
+                    <option value="">-- Select --</option>
+                    <option value="string">String</option>
+                    <option value="integer">Integer</option>
+                    <option value="index">Index</option>
+                  </Form.Select>
+                </Col>
+              </Row>
+            </div>
+            <Button 
+              onClick={() => removeColumns(index)}
+              variant="danger"
+              >
+                Remove
+            </Button>
           </Form>
             
-          </>
+          </div>
           )
         })}
 
