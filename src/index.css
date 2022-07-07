@@ -20,7 +20,7 @@ code {
 }
 
 .result button {
-  float:right;
+  float: right;
 }
 
 mark { 
@@ -30,6 +30,10 @@ mark {
   font: 1rem Inconsolata, monospace;
 }
 
-p2 {
+.result-text {
   font: 1rem Inconsolata, monospace;
+}
+
+.nav-description {
+  float: right;
 }

@@ -1,3 +1,11 @@
+TODO:
+
+- separate any section into separate files where is makes sense
+- Add GA tracker to track amount of visitors
+- Buy a domain and push to netlify
+- Get feedback
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
