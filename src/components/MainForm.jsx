@@ -1,26 +1,24 @@
-import Navigation from "../components/Navigation";
 import React from "react";
+import Navigation from './Navigation'
 import {Form, Button, Row, Col} from "react-bootstrap";
 
-export default function Tables() {
+export default function MainForm() {
   const [formData, setFormData] = React.useState(
       {
         tableType: "",
         tableName: "",
       }
     )
-
   const [columnFields, setColumnFields] = React.useState([])
   const [actionFields, setActionFields] = React.useState([])
-  // const [result, setResult] = React.useState("")
 
   function handleChange(event) {
-    const {name, value, type, checked} = event.target
+    const {name, value} = event.target
     setFormData(prevFormData => {
-        return {
-            ...prevFormData,
-            [name]: value
-        }
+      return {
+          ...prevFormData,
+          [name]: value
+      }
     })
   }
 
@@ -33,6 +31,7 @@ export default function Tables() {
   const handleAddColumnClick = () => {
     let newcolumn = { columnName: '', columnType: '' }
     setColumnFields([...columnFields, newcolumn])
+    console.log(columnFields)
   };
 
   const handleActionChange = (index, event) => {
@@ -52,21 +51,57 @@ export default function Tables() {
     setColumnFields(data)
   }
 
+  function handleActions() {
+    let fields = []
+    for (let i=0; i<actionFields.length; i++) {
+      let snake_case = actionFields[i].actionName.split(/(?=[A-Z])/).join('_').toLowerCase()
+      fields.push(snake_case)
+    }
+    let newFields = fields.toString().split(',').join(' ')
+    return newFields
+  }
+
+  const handlePlaceHolder = () => {
+    if (formData.tableType === 'create-table-and-model') {
+      return 'Model Name'
+    } else if (formData.tableType === 'create-table') {
+      return 'Table Name'
+    } else if (formData.tableType === 'create-controller') {
+      return 'Controller Name'
+    }
+  }
+
+  const handleColumnButton = () => {
+    if (formData.tableType !== 'create-controller' && formData.tableType !== '') {
+      return true
+    } else if (columnFields.length < 1 && (formData.tableType === 'add-column' || formData.tableType === 'remove-column')) {
+      return false
+    }
+  }
+
+  const littleMessage = () => {
+    if (formData.tableType !== '') {
+      return <>
+      <span>Don't forget to run  <mark>rails db:migrate</mark>    :)</span>
+      </>
+    } else {
+      return ''
+    }
+  }
+
   const handleResult = () => {
-    console.log(formData.tableType)
-    let firstColumn = columnFields.length >= 1 ? columnFields[0].columnName : ""
+    let firstColumn = typeof columnFields[0] === "undefined" ? "" : columnFields[0].columnName;
+
     if (formData.tableType === 'create-table') {
       let result = `rails g migration ${formData.tableName}`
       return result
-    } else if (columnFields.length >= 1 && formData.tableType === 'add-column') {
-      columnFields.length = 1
+    } else if (formData.tableType === 'add-column') {
       let result = `rails g migration Add${firstColumn}To${formData.tableName}`
       return result
     } else if (formData.tableType === 'create-join') {
       let result = `rails g create-join ${formData.tableName}`
       return result
-    } else if (columnFields.length >= 1 && formData.tableType === 'remove-column') {
-      columnFields.length = 1
+    } else if (formData.tableType === 'remove-column') {
       let result = `rails g Remove${firstColumn}From${formData.tableName}`
       return result
     } else if (formData.tableType === 'create-table-and-model') {
@@ -87,18 +122,22 @@ export default function Tables() {
     let fields = []
 
     const isColumn = (col) => {
-      if (col.columnName != '' && col.columnType != '') {
+      if (typeof col === "undefined") {
+        return false;
+      } else if (col.columnName !== '' && col.columnType !== '') {
         return true;
       } else {
         return false;
       }
     }
     
-    if ( columnFields.length >= 1 &&
-      formData.tableType === 'create-table' ||
+    if ( 
+      columnFields.length >= 1 &&
+      (formData.tableType === 'create-table' ||
       formData.tableType === 'create-table-and-model' ||
-      formData.tableType === 'create-scaffold') {
-        for (var i=0; i<columnFields.length; i++) {
+      formData.tableType === 'create-scaffold')
+      ) {
+        for (let i=0; i<columnFields.length; i++) {
           let semiColon = isColumn(columnFields[i]) ? ":" : ""
           let snake_case = columnFields[i].columnName.split(/(?=[A-Z])/).join('_').toLowerCase()
           fields.push(snake_case + semiColon + columnFields[i].columnType)
@@ -110,7 +149,11 @@ export default function Tables() {
       (formData.tableType === 'add-column' ||
       formData.tableType === 'remove-column')) {
         let semiColon = isColumn(columnFields[0]) ? ":" : ""
-        fields.push(columnFields[0].columnName + semiColon + columnFields[0].columnType)
+        let newColName = isColumn(columnFields[0]) ? columnFields[0].columnName : ""
+        let newColType = isColumn(columnFields[0]) ? columnFields[0].columnType : ""
+
+        fields.push(newColName + semiColon + newColType)
+
         let newFields = fields.toString().split(',').join(' ')
         let result = newFields.split(/(?=[A-Z])/).join('_').toLowerCase();
         return result
@@ -120,41 +163,11 @@ export default function Tables() {
     }
   }
 
-  function handleActions() {
-    let fields = []
-    for (var i=0; i<actionFields.length; i++) {
-      let snake_case = actionFields[i].actionName.split(/(?=[A-Z])/).join('_').toLowerCase()
-      fields.push(snake_case)
-    }
-    let newFields = fields.toString().split(',').join(' ')
-    return newFields
-  }
-
-  const handlePlaceHolder = () => {
-    if (formData.tableType === 'create-table-and-model') {
-      return 'Model Name'
-    } else if (formData.tableType === 'create-table') {
-      return 'Table Name'
-    } else if (formData.tableType === 'create-controller') {
-      return 'Controller Name'
-    }
-  }
-
-  const littleMessage = () => {
-    if (formData.tableType != 'create-controller') {
-      return <>
-      <span>Don't forget to run  <mark>rails db:migrate</mark>    :)</span>
-      </>
-    } else {
-      return ''
-    }
-  }
-
   const result = handleResult() + " " + (formData.tableType === 'create-controller' ? handleActions() : handleColumns())
 
   return (
     <div>
-      <Navigation />
+      <Navigation/>
       <div className="main">
         <h2>What do you want to do?</h2>
 
@@ -187,7 +200,7 @@ export default function Tables() {
 
         {/* -------------------------------------- COLUMN FORM -------------------------------- */}
 
-        {formData.tableType != 'create-controller' && formData.tableType != '' && columnFields.map((input, index) => {
+        {formData.tableType !== 'create-controller' && formData.tableType !== '' && columnFields.map((input, index) => {
           return (
           <div className="column" key={index}>
             <Form.Label>Column Name:</Form.Label>
@@ -246,8 +259,8 @@ export default function Tables() {
 
 
         {/* -------------------------------------- ACTIONS FORM -------------------------------- */}
-        {
-        // formData.tableType === 'create-controller' && 
+
+        {formData.tableType === 'create-controller' && formData.tableType !== '' &&
           actionFields.map((input, index) => {
             return (
               <div className="actions-form" key={index}>
@@ -263,7 +276,7 @@ export default function Tables() {
           })
         }    
 
-        {formData.tableType === 'create-controller' && formData.tableType != '' &&
+        {formData.tableType === 'create-controller' && formData.tableType !== '' &&
           <Button 
             id="form-submit" 
             variant="primary"
@@ -275,9 +288,7 @@ export default function Tables() {
 
         {/* -------------------------------------- END ACTIONS FORM -------------------------------- */}
 
-
-
-        {formData.tableType != 'create-controller' && formData.tableType != '' &&
+        {handleColumnButton() &&
           <Button 
             id="form-submit" 
             variant="primary"
@@ -291,9 +302,9 @@ export default function Tables() {
         <br/>
         <br/>
 
-        { formData.tableType != '' &&
+        { formData.tableType !== '' &&
           <div className="result" >
-            <p2>{result}</p2>
+            <p className="result-text">{result}</p>
             <br/>
             <Button variant="outline-dark"
               onClick={() => {navigator.clipboard.writeText(result)}}>
@@ -306,7 +317,7 @@ export default function Tables() {
         <br/>
         <br/>
 
-        {formData.tableType != '' && littleMessage()}
+        {formData.tableType !== '' && littleMessage()}
 
       </div>
     </div>
