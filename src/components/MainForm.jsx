@@ -68,6 +68,12 @@ export default function MainForm() {
       return 'Table Name'
     } else if (formData.tableType === 'create-controller') {
       return 'Controller Name'
+    } else if (formData.tableType === 'create-scaffold') {
+      return 'Resource Name'
+    } else if (formData.tableType === 'add-column') {
+      return 'Name of Table you are adding the column to'
+    } else if (formData.tableType === 'remove-column') {
+      return 'Name of Table you are removing the column from'
     }
   }
 
