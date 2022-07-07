@@ -233,8 +233,9 @@ export default function MainForm() {
                       <option value="">-- Select --</option>
                       <option value="string">string</option>
                       <option value="text">text</option>
-                      <option value="integer">integer</option>
                       <option value="boolean">boolean</option>
+                      <option value="references">references</option>
+                      <option value="integer">integer</option>
                       <option value="bigint">bigint</option>
                       <option value="float">float</option>
                       <option value="decimal">decimal</option>
