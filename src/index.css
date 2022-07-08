@@ -11,29 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-.result {
-  padding: 15px;
-  overflow: hidden;
-  background-color: rgb(236, 236, 236);
-  border-radius: 12px;
-}
-
-.result button {
-  float: right;
-}
-
-mark { 
-  background-color: rgb(236, 236, 236);
-  margin-left: 5px;
-  margin-right: 15px;
-  font: 1rem Inconsolata, monospace;
-}
-
-.result-text {
-  font: 1rem Inconsolata, monospace;
-}
-
-.nav-description {
-  float: right;
-}

@@ -1,5 +1,5 @@
 import './App.css';
-import MainForm from './components/MainForm'
+import Home from './pages/Home'
 import React from 'react';
 import {
   BrowserRouter,
@@ -20,7 +20,7 @@ function App() {
   return (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<MainForm />} />
+      <Route path="/" element={<Home />} />
     </Routes>
   </BrowserRouter>
   );

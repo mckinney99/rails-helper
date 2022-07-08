@@ -38,7 +38,7 @@
 }
 
 .main {
-  margin: 50px;
+  margin: 40px 80px;
 }
 
 .form-group {
@@ -47,4 +47,60 @@
 
 #form-submit {
   margin-top: 30px;
+}
+
+.result {
+  padding: 15px;
+  overflow: hidden;
+  background-color: rgb(236, 236, 236);
+  border-radius: 12px;
+}
+
+.result button {
+  float: right;
+}
+
+mark { 
+  background-color: rgb(236, 236, 236);
+  margin-left: 5px;
+  margin-right: 15px;
+  font: 1rem Inconsolata, monospace;
+}
+
+.result-text {
+  font: 1rem Inconsolata, monospace;
+}
+
+.nav-description {
+  float: right;
+}
+
+.column {
+  margin-top: 12px;
+}
+
+.actions-form {
+  margin-top: 12px;
+}
+
+.footer {
+  /* height: 60px; */
+  display:flex; 
+  flex-direction:row;
+}
+
+#github {
+  width: auto;  
+  height: 20px;  
+  float: right;
+}
+
+.footer-text {
+  flex: 1;
+  
+}
+
+.footer-image{
+  flex: 1;
+
 }
