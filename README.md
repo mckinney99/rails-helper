@@ -2,6 +2,10 @@
 
 React and React Bootstrap web app to easily create rails generate commands.
 
+https://railshelper.com/
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
