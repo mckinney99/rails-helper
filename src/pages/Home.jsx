@@ -57,23 +57,6 @@ export default function Home() {
     }
   }
 
-  const littleMessage = () => {
-    if (formData.tableType !== '') {
-      return (
-      <div className="footer">
-        <div className="footer-text">
-          Don't forget to run  <mark>rails db:migrate</mark>    :)
-        </div>
-        <div className="footer-image">
-          <Footer />
-        </div>
-      </div>
-      )
-    } else {
-      return ''
-    }
-  }
-
   const handleResult = () => {
     let firstColumn = () => {
       if (typeof columnFields[0] === "undefined") {
@@ -190,12 +173,8 @@ export default function Home() {
         <br/>
         <br/>
         <br/>
-
-        {formData.tableType !== '' && littleMessage()}
-
+        <Footer/>
       </div>
-
     </div>
-    
   );
 }
