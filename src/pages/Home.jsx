@@ -5,6 +5,7 @@ import ColumnForm from "../components/ColumnForm"
 import TableForm from "../components/TableForm"
 import ActionForm from "../components/ActionForm"
 import Footer from "../components/Footer"
+import CoffeeButton from "../components/CoffeeButton"
 
 export default function Home() {
   const [formData, setFormData] = React.useState(
@@ -67,6 +68,7 @@ export default function Home() {
         <div className="footer-image">
           <Footer />
         </div>
+        <CoffeeButton />
       </div>
       )
     } else {
