@@ -5,7 +5,6 @@ import ColumnForm from "../components/ColumnForm"
 import TableForm from "../components/TableForm"
 import ActionForm from "../components/ActionForm"
 import Footer from "../components/Footer"
-import CoffeeButton from "../components/CoffeeButton"
 
 export default function Home() {
   const [formData, setFormData] = React.useState(
@@ -55,24 +54,6 @@ export default function Home() {
       return 'Name of Table you are adding the column to'
     } else if (formData.tableType === 'remove-column') {
       return 'Name of Table you are removing the column from'
-    }
-  }
-
-  const littleMessage = () => {
-    if (formData.tableType !== '') {
-      return (
-      <div className="footer">
-        <div className="footer-text">
-          Don't forget to run  <mark>rails db:migrate</mark>    :)
-        </div>
-        <div className="footer-image">
-          <Footer />
-        </div>
-        <CoffeeButton />
-      </div>
-      )
-    } else {
-      return ''
     }
   }
 
@@ -192,12 +173,8 @@ export default function Home() {
         <br/>
         <br/>
         <br/>
-
-        {formData.tableType !== '' && littleMessage()}
-
+        <Footer/>
       </div>
-
     </div>
-    
   );
 }
