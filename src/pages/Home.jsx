@@ -34,8 +34,9 @@ export default function Home() {
   function handleActions() {
     let fields = []
     for (let i=0; i<actionFields.length; i++) {
-      let snake_case = actionFields[i].actionName.split(/(?=[A-Z])/).join('_').toLowerCase()
-      fields.push(snake_case)
+      // let snake_case = actionFields[i].actionName.split(/(?=[A-Z])/).join('_').toLowerCase()
+      const text = convertToSnakeCase(columnFields[i].columnName);
+      fields.push(text)
     }
     let newFields = fields.toString().split(',').join(' ')
     return newFields
@@ -69,25 +70,25 @@ export default function Home() {
     }
 
     if (formData.tableType === 'create-table') {
-      let result = `rails g migration ${formData.tableName}`
+      let result = `rails g migration Create${convertToSnakeCase(formData.tableName)}`
       return result
     } else if (formData.tableType === 'add-column') {
-      let result = `rails g migration Add${firstColumn()}To${formData.tableName}`
+      let result = `rails g migration Add${firstColumn()}To${convertToSnakeCase(formData.tableName)}`
       return result
     } else if (formData.tableType === 'create-join') {
-      let result = `rails g create-join ${formData.tableName}`
+      let result = `rails g create-join ${convertToSnakeCase(formData.tableName)}`
       return result
     } else if (formData.tableType === 'remove-column') {
-      let result = `rails g Remove${firstColumn()}From${formData.tableName}`
+      let result = `rails g Remove${firstColumn()}From${convertToSnakeCase(formData.tableName)}`
       return result
     } else if (formData.tableType === 'create-table-and-model') {
-      let result = `rails g model ${formData.tableName}`
+      let result = `rails g model ${convertToSnakeCase(formData.tableName)}`
       return result
     } else if (formData.tableType === 'create-controller') {
-      let result = `rails g controller ${formData.tableName}`
+      let result = `rails g controller ${convertToSnakeCase(formData.tableName)}`
       return result
     } else if (formData.tableType === 'create-scaffold') {
-      let result = `rails g scaffold ${formData.tableName}`
+      let result = `rails g scaffold ${convertToSnakeCase(formData.tableName)}`
       return result
     } else {
       return ""
@@ -110,7 +111,7 @@ export default function Home() {
     if (columnFields.length >= 1) {
       for (let i=0; i<columnFields.length; i++) {
         let semiColon = isColumn(columnFields[i]) ? ":" : ""
-        let snake_case = columnFields[i].columnName.split(/(?=[A-Z])/).join('_').toLowerCase()
+        let snake_case = convertToSnakeCase(columnFields[i].columnName)
         fields.push(snake_case + semiColon + columnFields[i].columnType)
       }
       let newFields = fields.toString().split(',').join(' ')
@@ -118,6 +119,10 @@ export default function Home() {
     } else {
       return ""
     }
+  }
+
+  function convertToSnakeCase(str) {
+    str.split(/(?=[A-Z])/).join('_').toLowerCase()
   }
 
   const result = handleResult() + " " + (formData.tableType === 'create-controller' ? handleActions() : handleColumns())

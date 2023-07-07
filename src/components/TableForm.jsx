@@ -12,12 +12,12 @@ export default function TableForm(props) {
         name="tableType"
       >
         <option value="">-- Select --</option>
-        <option value="create-table">Create a table migration</option>
-        <option value="create-table-and-model">Create a model with a corresponding migration</option>
+        <option value="create-table">Create a table</option>
+        <option value="create-table-and-model">Create a model with a corresponding table</option>
         <option value="create-controller">Create a controller</option>
         <option value="create-scaffold">Create a scaffold (Controller, Model, View, Route, and Migration)</option>
-        <option value="add-column">Add columns to existing table</option>
-        <option value="remove-column">Remove columns from existing table</option>
+        <option value="add-column">Add column/s to existing table</option>
+        <option value="remove-column">Remove column/s from existing table</option>
       </Form.Select>
 
       {props.tableType !== '' && 
