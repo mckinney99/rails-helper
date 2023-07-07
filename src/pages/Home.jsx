@@ -62,32 +62,32 @@ export default function Home() {
       if (typeof columnFields[0] === "undefined") {
         return ""
       } else if (columnFields.length > 1){
-        return "Columns"
+        return "columns"
       } else {
-        return columnFields[0].columnName
+        return convertToSnakeCase(columnFields[0].columnName)
       }
     }
 
     if (formData.tableType === 'create-table') {
-      let result = `rails g migration ${formData.tableName}`
+      let result = `rails g migration create_${convertToSnakeCase(formData.tableName)}`
       return result
     } else if (formData.tableType === 'add-column') {
-      let result = `rails g migration Add${firstColumn()}To${formData.tableName}`
+      let result = `rails g migration add_${firstColumn()}_to_${convertToSnakeCase(formData.tableName)}`
       return result
     } else if (formData.tableType === 'create-join') {
-      let result = `rails g create-join ${formData.tableName}`
+      let result = `rails g create-join ${convertToSnakeCase(formData.tableName)}`
       return result
     } else if (formData.tableType === 'remove-column') {
-      let result = `rails g Remove${firstColumn()}From${formData.tableName}`
+      let result = `rails g migration remove_${firstColumn()}_from_${convertToSnakeCase(formData.tableName)}`
       return result
     } else if (formData.tableType === 'create-table-and-model') {
-      let result = `rails g model ${formData.tableName}`
+      let result = `rails g model ${convertToSnakeCase(formData.tableName)}`
       return result
     } else if (formData.tableType === 'create-controller') {
-      let result = `rails g controller ${formData.tableName}`
+      let result = `rails g controller ${convertToSnakeCase(formData.tableName)}`
       return result
     } else if (formData.tableType === 'create-scaffold') {
-      let result = `rails g scaffold ${formData.tableName}`
+      let result = `rails g scaffold ${convertToSnakeCase(formData.tableName)}`
       return result
     } else {
       return ""
@@ -110,7 +110,7 @@ export default function Home() {
     if (columnFields.length >= 1) {
       for (let i=0; i<columnFields.length; i++) {
         let semiColon = isColumn(columnFields[i]) ? ":" : ""
-        let snake_case = columnFields[i].columnName.split(/(?=[A-Z])/).join('_').toLowerCase()
+        let snake_case = convertToSnakeCase(columnFields[i].columnName)
         fields.push(snake_case + semiColon + columnFields[i].columnType)
       }
       let newFields = fields.toString().split(',').join(' ')
@@ -119,6 +119,15 @@ export default function Home() {
       return ""
     }
   }
+
+  function convertToSnakeCase(str) {
+    // Replace uppercase letters with underscore followed by lowercase
+    const snakeCaseStr = str.replace(/([a-z])([A-Z])/g, '$1_$2');
+  
+    // Convert the string to lowercase
+    return snakeCaseStr.toLowerCase();
+  }
+  
 
   const result = handleResult() + " " + (formData.tableType === 'create-controller' ? handleActions() : handleColumns())
 
