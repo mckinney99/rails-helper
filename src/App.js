@@ -6,16 +6,13 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import ReactGA from 'react-ga';
+import ReactGA from "react-ga4";
 
-const TRACKING_ID = "UA-233786806-1";
+const TRACKING_ID = "G-YDPGVFCXQS";
 ReactGA.initialize(TRACKING_ID)
 
 function App() {
-
-  React.useEffect(() => {
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }, []);
+  ReactGA.send({ hitType: "pageview", page: "/my-path", title: "Custom Title" });
 
   return (
   <BrowserRouter>
